@@ -17,7 +17,7 @@ class _ChattlerState extends State<Chattler> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
@@ -31,6 +31,11 @@ class _ChattlerState extends State<Chattler> {
               .copyWith(color: Theme.of(context).colorScheme.onBackground),
           textAlign: TextAlign.center,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: "Talk shit!",
+        child: const Icon(Icons.chat_outlined),
       ),
     );
   }

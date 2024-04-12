@@ -1,9 +1,12 @@
-import 'package:chattler_app/screens/chattler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:chattler_app/screens/chattler.dart';
+import 'package:chattler_app/screens/auth.dart';
+
 final ColorScheme kColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color.fromARGB(255, 255, 235, 179),
+    seedColor: Color.fromARGB(255, 148, 243, 255),
+    // seedColor: const Color.fromARGB(255, 255, 235, 179),
     brightness: Brightness.light);
 
 final ThemeData theme = ThemeData().copyWith(
@@ -31,7 +34,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Chattler',
       theme: theme,
-      home: const Chattler(),
+      home: const AuthScreen(),
     );
   }
 }

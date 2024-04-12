@@ -66,4 +66,5 @@ class DefaultFirebaseOptions {
     iosClientId: '738430486508-2b1asua3k5tllc18aprpd0ue572vpjo1.apps.googleusercontent.com',
     iosBundleId: 'com.example.chattlerApp',
   );
+
 }

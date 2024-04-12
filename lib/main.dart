@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:chattler_app/screens/chattler.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+// import 'package:chattler_app/screens/chattler.dart';
 import 'package:chattler_app/screens/auth.dart';
 
 final ColorScheme kColorScheme = ColorScheme.fromSeed(
@@ -22,7 +25,13 @@ final ThemeData theme = ThemeData().copyWith(
     ),
     scaffoldBackgroundColor: kColorScheme.background);
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //!  ⬆️ important, fixed for the "can't start the app" bug. need to learn how it works though.
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //!  ⬆️ also important, required by the firebase. (see firebase documentation)
+
   runApp(const App());
 }
 

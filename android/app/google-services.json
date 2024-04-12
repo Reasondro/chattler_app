@@ -29,6 +29,13 @@
             {
               "client_id": "738430486508-m0lmm8mtvvhq1cjh7fng5vrshf5coibh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "738430486508-2b1asua3k5tllc18aprpd0ue572vpjo1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chattlerApp"
+              }
             }
           ]
         }

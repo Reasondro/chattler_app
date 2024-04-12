@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -12,19 +15,50 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>(); //! always need this
 
-  var _isLogin = true;
+  bool _isSignInMode = true;
 
   String _enteredEmail = "";
   String _enteredPassword = "";
 
-  void _submit() {
+  void _submit() async {
     final isValid = _formKey.currentState!.validate();
 
-    if (isValid) {
-      _formKey.currentState!.save();
-      print(_enteredEmail);
-      print(_enteredPassword);
+    if (!isValid) {
+      return;
     }
+
+    if (_isSignInMode) {
+      //* log users in
+    } else {
+      try {
+        final UserCredential userCredentials =
+            await _firebase.createUserWithEmailAndPassword(
+          email: _enteredEmail,
+          password: _enteredPassword,
+        );
+        print(userCredentials);
+      } on FirebaseAuthException catch (error) {
+        if (error.code == "email-already-in-use") {
+          // ......
+        }
+        //TODO  use mount method to fix possible issues below
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(error.message ?? "Authenthication failed."),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            // duration: Durations.long3,
+            dismissDirection: DismissDirection.down,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ))));
+      }
+    }
+
+    _formKey.currentState!.save();
+    // print(_enteredEmail);
+    // print(_enteredPassword);
   }
 
   @override
@@ -55,7 +89,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               const Text(
-                "P.S. Logo di atas curi dari google, Chattler mah original",
+                "P.S. Logo di atas curi dari google, warnanya doang diganti 😂",
                 style: TextStyle(fontSize: 10),
               ),
               SingleChildScrollView(
@@ -90,8 +124,10 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                         ),
                         TextFormField(
-                          decoration:
-                              const InputDecoration(labelText: "Password"),
+                          decoration: InputDecoration(
+                              labelText: _isSignInMode
+                                  ? "Password"
+                                  : "Create your password"),
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.trim().length < 6) {
@@ -119,17 +155,17 @@ class _AuthScreenState extends State<AuthScreen> {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .onPrimaryContainer),
-                            _isLogin ? "Sign In" : "Sign Up",
+                            _isSignInMode ? "Sign In" : "Sign Up",
                           ),
                         ),
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              _isLogin = !_isLogin;
-                              // _isLogin = _isLogin ? false : true;
+                              _isSignInMode = !_isSignInMode;
+                              // _isSignInMode = _isSignInMode ? false : true;
                             });
                           },
-                          child: Text(_isLogin
+                          child: Text(_isSignInMode
                               ? "Create an account"
                               : "I already have an account"),
                         )

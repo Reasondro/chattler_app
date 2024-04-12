@@ -2,11 +2,11 @@ import 'package:chattler_app/screens/chattler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final kColorScheme = ColorScheme.fromSeed(
+final ColorScheme kColorScheme = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 255, 235, 179),
     brightness: Brightness.light);
 
-final theme = ThemeData().copyWith(
+final ThemeData theme = ThemeData().copyWith(
     // scaffoldBackgroundColor: ,
     colorScheme: kColorScheme,
     textTheme: GoogleFonts.alexandriaTextTheme().copyWith(

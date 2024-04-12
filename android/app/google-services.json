@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "738430486508",
+    "project_id": "chattler-app-52a6e",
+    "storage_bucket": "chattler-app-52a6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738430486508:android:2165372959d974231022c9",
+        "android_client_info": {
+          "package_name": "com.example.chattler_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738430486508-m0lmm8mtvvhq1cjh7fng5vrshf5coibh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaE97Q3xS7zWMA-G60z3cI6Tv6ISqEVMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738430486508-m0lmm8mtvvhq1cjh7fng5vrshf5coibh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

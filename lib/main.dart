@@ -1,3 +1,6 @@
+import 'package:chattler_app/screens/chattler.dart';
+import 'package:chattler_app/screens/splash.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,8 +11,7 @@ import 'firebase_options.dart';
 import 'package:chattler_app/screens/auth.dart';
 
 final ColorScheme kColorScheme = ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(255, 148, 243, 255),
-    // seedColor: const Color.fromARGB(255, 255, 235, 179),
+    seedColor: const Color.fromARGB(255, 148, 243, 255),
     brightness: Brightness.light);
 
 final ThemeData theme = ThemeData().copyWith(
@@ -43,7 +45,20 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Chattler',
       theme: theme,
-      home: const AuthScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          }
+
+          if (snapshot.hasData) {
+            return const ChattlerScreen();
+          } else {
+            return const AuthScreen();
+          }
+        },
+      ),
     );
   }
 }

@@ -14,59 +14,53 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>(); //! always need this
-
   bool _isSignInMode = true;
 
   String _enteredEmail = "";
   String _enteredPassword = "";
 
   void _submit() async {
-    final isValid = _formKey.currentState!.validate();
+    final bool isValid = _formKey.currentState!.validate();
 
     if (!isValid) {
       return;
     }
-
-    if (_isSignInMode) {
-      //* log users in
-    } else {
-      try {
+    try {
+      if (_isSignInMode) {
+        final UserCredential userCredentials =
+            await _firebase.signInWithEmailAndPassword(
+                email: _enteredEmail, password: _enteredPassword);
+        // print(userCredentials);
+      } else {
         final UserCredential userCredentials =
             await _firebase.createUserWithEmailAndPassword(
           email: _enteredEmail,
           password: _enteredPassword,
         );
-
         // print(userCredentials);
-      } on FirebaseAuthException catch (error) {
-        // if (error.code == "email-already-in-use") {
-        // ......
-        // }
-        if (!mounted) {
-          return;
-        }
-
-        //! remember, mounted for stateful widget! other class should be state.mounted (must check it though)
-
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error.message ?? "Authenthication failed."),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            // duration: Durations.long3,
-            dismissDirection: DismissDirection.down,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-          ),
-        );
       }
+    } on FirebaseAuthException catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      //! remember, mounted for stateful widget! other class should be state.mounted (must check it though)
+
+      ScaffoldMessenger.of(context).clearSnackBars(); //? ⬇️ show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? "Authenthication failed."),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          // duration: Durations.long3,
+          dismissDirection: DismissDirection.down,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7)),
+          ),
+        ),
+      );
     }
 
-    _formKey.currentState!.save();
+    _formKey.currentState!.save(); //? save if out from the try catch
     // print(_enteredEmail);
     // print(_enteredPassword);
   }

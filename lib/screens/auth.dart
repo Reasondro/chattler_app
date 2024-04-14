@@ -36,23 +36,33 @@ class _AuthScreenState extends State<AuthScreen> {
           email: _enteredEmail,
           password: _enteredPassword,
         );
-        print(userCredentials);
+
+        // print(userCredentials);
       } on FirebaseAuthException catch (error) {
-        if (error.code == "email-already-in-use") {
-          // ......
+        // if (error.code == "email-already-in-use") {
+        // ......
+        // }
+        if (!mounted) {
+          return;
         }
-        //TODO  use mount method to fix possible issues below
+
+        //! remember, mounted for stateful widget! other class should be state.mounted (must check it though)
+
         ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
             content: Text(error.message ?? "Authenthication failed."),
             backgroundColor: Theme.of(context).colorScheme.primary,
             // duration: Durations.long3,
             dismissDirection: DismissDirection.down,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ))));
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+            ),
+          ),
+        );
       }
     }
 
@@ -151,11 +161,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                   .colorScheme
                                   .primaryContainer),
                           child: Text(
+                            _isSignInMode ? "Sign In" : "Sign Up",
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .onPrimaryContainer),
-                            _isSignInMode ? "Sign In" : "Sign Up",
                           ),
                         ),
                         TextButton(

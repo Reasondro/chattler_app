@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chattler_app/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,12 +22,30 @@ class _AuthScreenState extends State<AuthScreen> {
   String _enteredEmail = "";
   String _enteredPassword = "";
 
+  File? _selectedImage;
+
   void _submit() async {
     final bool isValid = _formKey.currentState!.validate();
 
     if (!isValid) {
       return;
     }
+    if (!_isSignInMode && _selectedImage == null) {
+      ScaffoldMessenger.of(context).clearSnackBars(); //? ⬇️ show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("You must select an image"),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          // duration: Durations.long3,
+          dismissDirection: DismissDirection.down,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7)),
+          ),
+        ),
+      );
+      return;
+    }
+
     try {
       if (_isSignInMode) {
         final UserCredential userCredentials =
@@ -113,7 +133,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           MainAxisSize.min, //? also no effect? gotta test more
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (!_isSignInMode) const UserImagePicker(),
+                        if (!_isSignInMode)
+                          UserImagePicker(
+                            onPickImage: (pickedImage) {
+                              _selectedImage = pickedImage;
+                            },
+                          ),
                         TextFormField(
                           decoration:
                               const InputDecoration(labelText: "Email Address"),

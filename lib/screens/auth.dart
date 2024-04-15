@@ -1,3 +1,4 @@
+import 'package:chattler_app/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,7 +15,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>(); //! always need this
-  bool _isSignInMode = true;
+  bool _isSignInMode = false;
 
   String _enteredEmail = "";
   String _enteredPassword = "";
@@ -96,6 +97,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 "P.S. Logo di atas curi dari google, warnanya doang diganti 😂",
                 style: TextStyle(fontSize: 10),
               ),
+              const SizedBox(
+                height: 15,
+              ),
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -109,6 +113,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           MainAxisSize.min, //? also no effect? gotta test more
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        if (!_isSignInMode) const UserImagePicker(),
                         TextFormField(
                           decoration:
                               const InputDecoration(labelText: "Email Address"),

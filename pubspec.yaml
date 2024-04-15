@@ -41,6 +41,7 @@ dependencies:
   location: ^6.0.1
   firebase_core: ^2.29.0
   firebase_auth: ^4.19.1
+  firebase_storage: ^11.7.1
 
 dev_dependencies:
   flutter_test:

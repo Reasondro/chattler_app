@@ -54,7 +54,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
               _pickedImageFile != null ? FileImage(_pickedImageFile!) : null,
         ),
         const SizedBox(
-          height: 5,
+          height: 12,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

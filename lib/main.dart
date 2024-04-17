@@ -1,10 +1,13 @@
-import 'package:chattler_app/screens/chattler.dart';
-import 'package:chattler_app/screens/splash.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:chattler_app/screens/chattler.dart';
+import 'package:chattler_app/screens/splash.dart';
+
 import 'firebase_options.dart';
 
 // import 'package:chattler_app/screens/chattler.dart';
@@ -52,7 +55,8 @@ class App extends StatelessWidget {
             return const SplashScreen();
           }
 
-          if (snapshot.hasData) {
+          if (snapshot.hasData) //? if device have auth code
+           {
             return const ChattlerScreen();
           } else {
             return const AuthScreen();

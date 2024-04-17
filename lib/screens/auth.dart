@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:chattler_app/widgets/user_image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -23,6 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String _enteredPassword = "";
 
   File? _selectedImage;
+  bool _isAuthenticating = false;
 
   void _submit() async {
     final bool isValid = _formKey.currentState!.validate();
@@ -47,6 +50,10 @@ class _AuthScreenState extends State<AuthScreen> {
     }
 
     try {
+      setState(() {
+        _isAuthenticating = true;
+      });
+
       if (_isSignInMode) {
         final UserCredential userCredentials =
             await _firebase.signInWithEmailAndPassword(
@@ -58,7 +65,20 @@ class _AuthScreenState extends State<AuthScreen> {
           email: _enteredEmail,
           password: _enteredPassword,
         );
-        // print(userCredentials);
+
+        //? image and user can't be null at this point
+        final Reference storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child(
+                '${userCredentials.user!.uid}.jpg'); //? get the storage path in the firebase storage
+
+        await storageRef
+            .putFile(_selectedImage!); //? put the user image in the database
+        final imageUrl =
+            await storageRef.getDownloadURL(); //? get the image download url
+
+        // FirebaseFirestore
       }
     } on FirebaseAuthException catch (error) {
       if (!mounted) {
@@ -79,6 +99,9 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
       );
+      setState(() {
+        _isAuthenticating = false;
+      });
     }
 
     _formKey.currentState!.save(); //? save if out from the try catch
@@ -107,19 +130,19 @@ class _AuthScreenState extends State<AuthScreen> {
               Container(
                 width: 270,
                 margin: const EdgeInsets.only(
-                    top: 25, bottom: 50, left: 20, right: 20),
+                    top: 25, bottom: 40, left: 20, right: 20),
                 child: Image.asset(
                   'assets/images/chat3.png',
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              const Text(
-                "P.S. Logo di atas curi dari google, warnanya doang diganti 😂",
-                style: TextStyle(fontSize: 10),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
+              // const Text(
+              //   "P.S. Logo di atas curi dari google, warnanya doang diganti 😂",
+              //   style: TextStyle(fontSize: 10),
+              // ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -176,33 +199,37 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            _submit();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer),
-                          child: Text(
-                            _isSignInMode ? "Sign In" : "Sign Up",
-                            style: TextStyle(
-                                color: Theme.of(context)
+                        if (_isAuthenticating)
+                          const CircularProgressIndicator(),
+                        if (!_isAuthenticating)
+                          ElevatedButton(
+                            onPressed: () {
+                              _submit();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
                                     .colorScheme
-                                    .onPrimaryContainer),
+                                    .primaryContainer),
+                            child: Text(
+                              _isSignInMode ? "Sign In" : "Sign Up",
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer),
+                            ),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isSignInMode = !_isSignInMode;
-                              // _isSignInMode = _isSignInMode ? false : true;
-                            });
-                          },
-                          child: Text(_isSignInMode
-                              ? "Create an account"
-                              : "I already have an account"),
-                        )
+                        if (!_isAuthenticating)
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isSignInMode = !_isSignInMode;
+                                // _isSignInMode = _isSignInMode ? false : true;
+                              });
+                            },
+                            child: Text(_isSignInMode
+                                ? "Create an account"
+                                : "I already have an account"),
+                          )
                       ],
                     ),
                   ),

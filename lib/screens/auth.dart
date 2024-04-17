@@ -22,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isSignInMode = false;
 
   String _enteredEmail = "";
+  String _enteredUsername = "";
   String _enteredPassword = "";
 
   File? _selectedImage;
@@ -82,7 +83,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .collection('users')
             .doc(userCredentials.user!.uid)
             .set({
-          'username': 'to be done...',
+          'username': _enteredUsername,
           'email': _enteredEmail,
           'image_url': imageUrl,
         });
@@ -188,6 +189,23 @@ class _AuthScreenState extends State<AuthScreen> {
                             _enteredEmail = value!;
                           },
                         ),
+                        if (!_isSignInMode)
+                          TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Create your username"),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  value.trim().length < 4) {
+                                return "Please enter at least 4 characters";
+                              }
+                              return null;
+                            },
+                            enableSuggestions: false,
+                            onSaved: (value) {
+                              _enteredUsername = value!;
+                            },
+                          ),
                         TextFormField(
                           decoration: InputDecoration(
                               labelText: _isSignInMode

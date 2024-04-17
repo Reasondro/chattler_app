@@ -1,3 +1,5 @@
+import 'package:chattler_app/widgets/chat_messages.dart';
+import 'package:chattler_app/widgets/new_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,6 +16,7 @@ class ChattlerScreen extends StatefulWidget {
 class _ChattlerState extends State<ChattlerScreen> {
   @override
   Widget build(BuildContext context) {
+    //TODO use content implementation (dynamic if no chats or not)
     Widget content = Container(
       alignment: Alignment.center,
       child: Text(
@@ -54,12 +57,21 @@ class _ChattlerState extends State<ChattlerScreen> {
           ),
         ],
       ),
-      body: content,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Talk shit!",
-        child: const Icon(Icons.chat_outlined),
+      body: const Column(
+        children: [
+          Expanded //? expanded here to make sure take all the space
+              (
+            child: ChatMessages(),
+          ),
+          NewMessage(),
+        ],
       ),
+      //TODO implement below
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   tooltip: "Talk shit!",
+      //   child: const Icon(Icons.chat_outlined),
+      // ),
     );
   }
 }

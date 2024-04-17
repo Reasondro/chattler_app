@@ -56,7 +56,7 @@ class App extends StatelessWidget {
           }
 
           if (snapshot.hasData) //? if device have auth code
-           {
+          {
             return const ChattlerScreen();
           } else {
             return const AuthScreen();

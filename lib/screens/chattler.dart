@@ -1,5 +1,6 @@
 import 'package:chattler_app/widgets/chat_messages.dart';
 import 'package:chattler_app/widgets/new_messages.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,6 +15,22 @@ class ChattlerScreen extends StatefulWidget {
 }
 
 class _ChattlerState extends State<ChattlerScreen> {
+  void setUpPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+
+    final token = await fcm.getToken();
+    print(
+        "Token: $token"); //* could sen this token (via http or the firestore sdk) to a backedn
+  }
+
+  @override
+  void initState() //! dont put async in initState
+  {
+    super.initState();
+    setUpPushNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     //TODO use content implementation (dynamic if no chats or not)

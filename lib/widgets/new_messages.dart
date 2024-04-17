@@ -12,24 +12,24 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
-  var _messageController = TextEditingController();
+  var messageController = TextEditingController();
 
   @override
   void dispose() //! a must for TextField stuffs
   {
-    _messageController.dispose();
+    messageController.dispose();
     super.dispose();
   }
 
   void _submitMessage() async {
-    final String enteredMessage = _messageController.text;
+    final String enteredMessage = messageController.text;
 
     if (enteredMessage.trim().isEmpty) {
       //TODO send an error message
       return;
     }
     FocusScope.of(context).unfocus(); //? cloase any open keyboard
-    _messageController.clear(); //? reset the text field
+    messageController.clear(); //? reset the text field
 
     final user = FirebaseAuth.instance.currentUser!; //?
     final userData = await FirebaseFirestore.instance
@@ -54,7 +54,7 @@ class _NewMessageState extends State<NewMessage> {
         children: [
           Expanded(
             child: TextField(
-              controller: _messageController,
+              controller: messageController,
               textCapitalization: TextCapitalization.sentences,
               // autocorrect: true,
               enableSuggestions: true,

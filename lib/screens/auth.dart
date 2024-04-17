@@ -78,10 +78,18 @@ class _AuthScreenState extends State<AuthScreen> {
         final imageUrl =
             await storageRef.getDownloadURL(); //? get the image download url
 
-        // FirebaseFirestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user!.uid)
+            .set({
+          'username': 'to be done...',
+          'email': _enteredEmail,
+          'image_url': imageUrl,
+        });
       }
     } on FirebaseAuthException catch (error) {
-      if (!mounted) {
+      if (!mounted) //? if the async gap f***d up the built context
+      {
         return;
       }
 

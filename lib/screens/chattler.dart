@@ -19,9 +19,12 @@ class _ChattlerState extends State<ChattlerScreen> {
     final fcm = FirebaseMessaging.instance;
     await fcm.requestPermission();
 
-    final token = await fcm.getToken();
-    print(
-        "Token: $token"); //* could sen this token (via http or the firestore sdk) to a backedn
+    // final token = await fcm.getToken(); //? method  manually for each device
+    // print(
+    //     "Token: $token"); //* could sen this token (via http or the firestore sdk) to a backedn
+
+    fcm.subscribeToTopic(
+        'chat'); //? for every device that subscribes to this topioc
   }
 
   @override

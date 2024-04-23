@@ -1,1 +1,34 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"chattler-app-52a6e","appId":"1:738430486508:android:2165372959d974231022c9","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"chattler-app-52a6e","configurations":{"android":"1:738430486508:android:2165372959d974231022c9","ios":"1:738430486508:ios:d250949cce539ed41022c9"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "chattler-app-52a6e",
+          "appId": "1:738430486508:android:2165372959d974231022c9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "chattler-app-52a6e",
+          "configurations": {
+            "android": "1:738430486508:android:2165372959d974231022c9",
+            "ios": "1:738430486508:ios:d250949cce539ed41022c9"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
+}
